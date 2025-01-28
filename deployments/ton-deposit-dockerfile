@@ -1,0 +1,75 @@
+ARG COMMIT_SHA
+ARG VERSION
+ARG APP
+# Start from a small, secure base image
+FROM golang:1.23-alpine AS builder
+
+LABEL stage=gobuilder
+
+ARG COMMIT_SHA
+ARG VERSION
+ARG APP
+ARG TARGETARCH
+
+ENV TARGETARCH=$TARGETARCH
+RUN echo "TARGETARCH=$TARGETARCH"
+
+RUN echo "COMMIT_SHA=${COMMIT_SHA}" 
+RUN echo "VERSION=${VERSION}"
+RUN echo "APP=${APP}"
+# Set the working directory inside the container
+WORKDIR /app
+
+RUN apk add --no-cache libgit2 libgit2-dev git gcc g++ pkgconfig zstd-dev
+# Copy the Go module files
+COPY ./go.mod ./go.sum ./
+
+# Download the Go module dependencies
+RUN go mod download
+
+# Copy the source code into the container
+COPY . .
+# Build the Go binary
+RUN CGO_ENABLED=1 GOOS=linux GOARCH=${TARGETARCH} go build -a -installsuffix cgo \
+      -trimpath \
+      -ldflags="-w -s \
+      -X github.com/rmukhamet/trading-activity-manager/cmd.Build=${COMMIT_SHA} \
+      -X github.com/rmukhamet/trading-activity-manager/cmd.Version=${VERSION} \
+      -extldflags '-static'" -a \
+      -o /app/ton-deposit ./cmd/ton-deposit/main.go
+
+
+# Create a minimal production image
+FROM alpine:3.18
+# It's essential to regularly update the packages within the image to include security patches
+RUN apk update && apk upgrade
+
+# Reduce image size
+RUN rm -rf /var/cache/apk/* && \
+    rm -rf /tmp/*
+
+# Avoid running code as a root user
+RUN adduser -D ton-deposit
+USER ton-deposit
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy only the necessary files from the builder stage
+RUN ls /app
+COPY --from=builder "/app/ton-deposit" ./
+
+RUN ls -la /app
+RUN ls -la 
+# Set any environment variables required by the application
+ENV GEYSER_PORT=:8080
+ENV RPC_PORT=:8081
+
+# Expose the port that the application listens on
+EXPOSE 8080
+EXPOSE 8081
+
+EXPOSE 9000
+
+# Run the binary when the container starts
+CMD ["./ton-deposit"]
