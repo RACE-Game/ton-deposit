@@ -12,6 +12,8 @@ import (
 
 	"github.com/ilyakaznacheev/cleanenv"
 	"go.uber.org/zap"
+
+	"github.com/RACE-Game/ton-deposit-service/interfaces/ton"
 )
 
 type Config struct {
@@ -46,6 +48,9 @@ func run(ctx context.Context, _ io.Writer, args []string) error {
 	sugarLogger.Infof("Starting server with config: %s\n, %s\n",
 		cfg.HTTPHost, cfg.HTTPPort,
 	)
+
+	tonClient := ton.New()
+	_ = tonClient
 
 	// define http server
 	// define service

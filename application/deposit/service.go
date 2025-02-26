@@ -1,5 +1,7 @@
 package deposit
 
+import "context"
+
 type Service struct {
 	tonClient         TonClient
 	depositRepository DepositRepository
@@ -16,4 +18,9 @@ func New(
 		depositRepository: depositRepository,
 		logger:            logger,
 	}
+}
+
+func (s *Service) Start(ctx context.Context) error {
+
+	return nil
 }
