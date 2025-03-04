@@ -4,13 +4,16 @@ import (
 	"context"
 	"fmt"
 	"time"
+
+	"github.com/RACE-Game/ton-deposit-service/infrastructure/db"
+	"github.com/RACE-Game/ton-deposit-service/internal/domain/telegram"
 )
 
 type Repository struct {
-	db repositories.Database
+	db db.Database
 }
 
-func New(db repositories.Database) (*Repository, error) {
+func New(db db.Database) (*Repository, error) {
 
 	if err := db.Ping(); err != nil {
 		return nil, fmt.Errorf("can't connect to database: %w", err)

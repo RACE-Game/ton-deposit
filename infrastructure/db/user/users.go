@@ -6,6 +6,7 @@ import (
 	"os/user"
 
 	"github.com/RACE-Game/ton-deposit-service/infrastructure/db"
+	"github.com/RACE-Game/ton-deposit-service/internal/domain/telegram"
 )
 
 type Repository struct {

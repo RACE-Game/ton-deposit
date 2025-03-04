@@ -5,7 +5,7 @@ import (
 
 	"github.com/RACE-Game/ton-deposit-service/internal/domain/deposit"
 	"github.com/RACE-Game/ton-deposit-service/internal/domain/notification"
-	"github.com/RACE-Game/ton-deposit-service/internal/domain/user"
+	"github.com/RACE-Game/ton-deposit-service/internal/domain/telegram"
 	"github.com/google/uuid"
 )
 
@@ -15,7 +15,7 @@ type DepositService interface {
 }
 
 type GameService interface {
-	GetReferals(ctx context.Context, referrerID *uint64) ([]user.Referal, error)
+	GetReferals(ctx context.Context, referrerID *uint64) ([]telegram.Referal, error)
 	GetReferalsCount(ctx context.Context, referrerID *uint64) (int64, error)
 	//GetScores(ctx context.Context, limit *int64, userID *int64, token *string) ([]model.Score, error)
 	//GetUserRank(ctx context.Context, userID int64, token string) (model.Rank, error)
@@ -36,7 +36,8 @@ type UserService interface {
 	SaveUserData(ctx context.Context, userID int64, data []byte) error
 	GetUserData(ctx context.Context, userID int64) (data []byte, err error)
 	Deposite(ctx context.Context, userID int64, token string, amount uint64) (uuid.UUID, error)
-	GetAccount(ctx context.Context, userID int64) (user.Account, error)
+	GetAccount(ctx context.Context, userID int64) (telegram.Account, error)
+	GetReferals(ctx context.Context, referrerID *uint64) ([]telegram.Referal, error)
 }
 
 // type ClaimController interface {
