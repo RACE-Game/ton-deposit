@@ -6,7 +6,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 
-	"github.com/RACE-Game/ton-deposit-service/internal/domain/notification"
+	"github.com/RACE-Game/ton-deposit/internal/domain/notification"
 )
 
 func (t *Telegram) SendNotificationToUser(ctx context.Context, userID int64, notification notification.Notification) error {

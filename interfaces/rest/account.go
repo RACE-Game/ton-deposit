@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	webapps "github.com/Fuchsoria/telegram-webapps"
-	"github.com/RACE-Game/ton-deposit-service/interfaces"
+	"github.com/RACE-Game/ton-deposit/interfaces"
 )
 
 func HandlerGetAccount(userService interfaces.UserService, logger Logger) http.HandlerFunc {

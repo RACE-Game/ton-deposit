@@ -1,4 +1,4 @@
-module github.com/RACE-Game/ton-deposit-service
+module github.com/RACE-Game/ton-deposit
 
 go 1.23.4
 

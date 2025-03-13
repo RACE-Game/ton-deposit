@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/RACE-Game/ton-deposit-service/infrastructure/db"
-	"github.com/RACE-Game/ton-deposit-service/internal/domain/telegram"
+	"github.com/RACE-Game/ton-deposit/infrastructure/db"
+	"github.com/RACE-Game/ton-deposit/internal/domain/telegram"
 )
 
 type Repository struct {

@@ -3,9 +3,9 @@ package interfaces
 import (
 	"context"
 
-	"github.com/RACE-Game/ton-deposit-service/internal/domain/deposit"
-	"github.com/RACE-Game/ton-deposit-service/internal/domain/notification"
-	"github.com/RACE-Game/ton-deposit-service/internal/domain/telegram"
+	"github.com/RACE-Game/ton-deposit/internal/domain/deposit"
+	"github.com/RACE-Game/ton-deposit/internal/domain/notification"
+	"github.com/RACE-Game/ton-deposit/internal/domain/telegram"
 	"github.com/google/uuid"
 )
 

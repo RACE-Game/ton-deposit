@@ -9,7 +9,7 @@ import (
 	webapps "github.com/Fuchsoria/telegram-webapps"
 	"github.com/go-chi/cors"
 
-	"github.com/RACE-Game/ton-deposit-service/cmd"
+	"github.com/RACE-Game/ton-deposit/cmd"
 )
 
 func corsMiddleware(next http.Handler) http.Handler {

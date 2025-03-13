@@ -3,7 +3,7 @@ package rest
 import (
 	"net/http"
 
-	"github.com/RACE-Game/ton-deposit-service/interfaces"
+	"github.com/RACE-Game/ton-deposit/interfaces"
 )
 
 /*

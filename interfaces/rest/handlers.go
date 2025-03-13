@@ -7,7 +7,7 @@ import (
 	"sync/atomic"
 	"text/template"
 
-	"github.com/RACE-Game/ton-deposit-service/interfaces"
+	"github.com/RACE-Game/ton-deposit/interfaces"
 )
 
 // handleSomething обрабатывает веб-запрос

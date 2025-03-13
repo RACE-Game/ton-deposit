@@ -13,12 +13,13 @@ import (
 	"github.com/ilyakaznacheev/cleanenv"
 	"go.uber.org/zap"
 
-	"github.com/RACE-Game/ton-deposit-service/interfaces/ton"
+	"github.com/RACE-Game/ton-deposit/interfaces/ton"
 )
 
 type Config struct {
 	HTTPHost           string `env:"HTTP_HOST" env-default:"127.0.0.1"`
 	HTTPPort           string `env:"HTTP_PORT" env-default:"9001"`
+	TonScanURL         string `env:"TON_SCAN_URL" env-default:"127.0.0.0:9003"`
 	PostgresURL        string `env:"POSTGRES_URL" env-default:"" required:"true"`
 	TelegramAPIKey     string `env:"TELEGRAM_API_KEY" env-default:""`
 	TelegramBotLink    string `env:"TELEGRAM_BOT_LINK" env-default:""`

@@ -3,7 +3,7 @@ package telegram
 import (
 	"context"
 
-	"github.com/RACE-Game/ton-deposit-service/internal/domain/telegram"
+	"github.com/RACE-Game/ton-deposit/internal/domain/telegram"
 )
 
 type UserController interface {

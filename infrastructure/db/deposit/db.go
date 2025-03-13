@@ -3,7 +3,7 @@ package deposit
 import (
 	"fmt"
 
-	"github.com/RACE-Game/ton-deposit-service/infrastructure/db"
+	"github.com/RACE-Game/ton-deposit/infrastructure/db"
 )
 
 type Repository struct {
