@@ -45,7 +45,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}/trader
+          images: ghcr.io/${{ github.repository }}/ton-deposit
 
       - name: Build and push image
         id: push
