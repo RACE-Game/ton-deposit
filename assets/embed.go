@@ -2,5 +2,5 @@ package assets
 
 import "embed"
 
-//go:embed *.jpeg *.jpg *.gif *.mp4
+//go:embed *.jpeg *.gif
 var Assets embed.FS
