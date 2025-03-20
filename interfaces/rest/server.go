@@ -33,6 +33,7 @@ func NewServerMux(
 	appSecret string,
 	userService interfaces.UserService,
 	depositService interfaces.DepositService,
+	orderService interfaces.OrderService,
 ) http.Handler {
 	mux := http.NewServeMux()
 	addRoutes(
@@ -40,6 +41,7 @@ func NewServerMux(
 		logger,
 		userService,
 		depositService,
+		orderService,
 	)
 
 	// add app version to response

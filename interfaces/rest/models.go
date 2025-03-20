@@ -1,5 +1,7 @@
 package rest
 
+import "github.com/google/uuid"
+
 type ArbitrageResponse struct {
 	Amount        int64  `json:"amount"`
 	TransactionID string `json:"transaction_id"`
@@ -43,4 +45,13 @@ type ClaimResponse struct {
 	PayloadBOC    []byte `json:"payload_boc"`
 	PayloadSigned []byte `json:"payload_signed"`
 	ID            int64  `json:"id"`
+}
+
+type CreateOrderRequest struct {
+	Token  string `json:"token"`
+	Amount uint64 `json:"amount"`
+}
+
+type CreateOrderResponse struct {
+	OrderID uuid.UUID `json:"order_id"`
 }

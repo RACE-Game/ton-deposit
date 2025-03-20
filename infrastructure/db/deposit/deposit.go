@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"time"
+
+	"github.com/google/uuid"
 )
 
-func (r *Repository) Order(ctx context.Context, token string, userID int64, amount int64, wallet string) (id int64, err error) {
-	query := fmt.Sprintf(`INSERT INTO %s.claims 
+func (r *Repository) Order(ctx context.Context, token string, userID int64, amount int64, wallet string) (id uuid.UUID, err error) {
+	query := fmt.Sprintf(`INSERT INTO %s.orders 
 	(token, user_id, amount, wallet, created_at) VALUES ($1, $2, $3, $4, $5)
 	returning id`,
 		r.db.Scheme(),
@@ -15,7 +17,7 @@ func (r *Repository) Order(ctx context.Context, token string, userID int64, amou
 
 	row, err := r.db.QueryContext(ctx, query, token, userID, amount, wallet, time.Now())
 	if err != nil {
-		return 0, fmt.Errorf("can't save claim: %w", err)
+		return uuid.Nil, fmt.Errorf("can't save claim: %w", err)
 	}
 
 	defer row.Close()
@@ -23,7 +25,7 @@ func (r *Repository) Order(ctx context.Context, token string, userID int64, amou
 	row.Next()
 	err = row.Scan(&id)
 	if err != nil {
-		return 0, fmt.Errorf("can't scan created claim id: %w", err)
+		return uuid.Nil, fmt.Errorf("can't scan created claim id: %w", err)
 	}
 
 	return id, nil

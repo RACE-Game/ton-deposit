@@ -23,6 +23,7 @@ func addRoutes(
 	logger Logger,
 	userService interfaces.UserService,
 	depositService interfaces.DepositService,
+	orderService interfaces.OrderService,
 ) {
 	mux.Handle("GET /healthz", healthzHandler(&healthy))
 	mux.Handle("GET /readyz", readyzHandler(&ready))
@@ -31,7 +32,7 @@ func addRoutes(
 
 	mux.Handle("GET /referals", corsMiddleware(HandlerReferalAll(userService)))
 	mux.Handle("GET /referals/{referrer_id}", corsMiddleware(HandlerReferalAll(userService)))
-	//mux.Handle("GET /referals/{referrer_id}/count", corsMiddleware(HandlerReferalIDCount(userService)))
+	// mux.Handle("GET /referals/{referrer_id}/count", corsMiddleware(HandlerReferalIDCount(userService)))
 	mux.Handle("OPTIONS /referals/{referrer_id...}", corsMiddleware(handleCORS()))
 	mux.Handle("OPTIONS /referals", corsMiddleware(handleCORS()))
 
@@ -41,8 +42,10 @@ func addRoutes(
 	mux.Handle("POST /deposit", corsMiddleware(HandlerDepositRequest(depositService, logger)))
 	mux.Handle("GET /deposit", corsMiddleware(HandlerGetDeposits(depositService, logger)))
 
-	mux.Handle("OPTIONS /deposite", corsMiddleware(handleCORS()))
+	mux.Handle("OPTIONS /deposit", corsMiddleware(handleCORS()))
 
+	mux.Handle("POST /order", corsMiddleware(HandlerCreateOrder(orderService, logger)))
+	mux.Handle("OPTIONS /order", corsMiddleware(handleCORS()))
 	// mux.Handle("GET /group/member", corsMiddleware(HandlerGroupMember(notifyController)))
 	// mux.Handle("OPTIONS /group/member", corsMiddleware(handleCORS()))
 
