@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/RACE-Game/ton-deposit/internal/domain/deposit"
 	"github.com/google/uuid"
 )
 
@@ -29,6 +30,38 @@ func (r *Repository) Order(ctx context.Context, token string, userID int64, amou
 	}
 
 	return id, nil
+}
+
+func (r *Repository) GetOrders(ctx context.Context) (orders []deposit.Order, err error) {
+	query := fmt.Sprintf(`SELECT id, token, user_id, amount, wallet, created_at
+	FROM %s.orders `,
+		r.db.Scheme(),
+	)
+
+	rows, err := r.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, fmt.Errorf("can't get orders: %w", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var order deposit.Order
+		err = rows.Scan(
+			&order.ID,
+			&order.Token,
+			&order.UserID,
+			&order.Amount,
+			&order.Wallet,
+			&order.CreatedAt,
+		)
+		if err != nil {
+			return nil, fmt.Errorf("can't scan order: %w", err)
+		}
+
+		orders = append(orders, order)
+	}
+
+	return orders, nil
 }
 
 // func (r *Repository) GetByUserID(ctx context.Context, userID int64) (claims []model.ClaimWithdrowal, err error) {
