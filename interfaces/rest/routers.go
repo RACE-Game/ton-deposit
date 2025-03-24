@@ -21,22 +21,21 @@ GET  /wallet/collect // collect all money to investor wallet
 func addRoutes(
 	mux *http.ServeMux,
 	logger Logger,
-	userService interfaces.UserService,
+	//userService interfaces.UserService,
 	depositService interfaces.DepositService,
-	orderService interfaces.OrderService,
 ) {
 	mux.Handle("GET /healthz", healthzHandler(&healthy))
 	mux.Handle("GET /readyz", readyzHandler(&ready))
 	mux.Handle("GET /ping", healthzHandler(&healthy))
 	mux.Handle("GET /", http.NotFoundHandler())
 
-	mux.Handle("GET /referals", corsMiddleware(HandlerReferalAll(userService)))
-	mux.Handle("GET /referals/{referrer_id}", corsMiddleware(HandlerReferalAll(userService)))
+	// mux.Handle("GET /referals", corsMiddleware(HandlerReferalAll(userService)))
+	// mux.Handle("GET /referals/{referrer_id}", corsMiddleware(HandlerReferalAll(userService)))
 	// mux.Handle("GET /referals/{referrer_id}/count", corsMiddleware(HandlerReferalIDCount(userService)))
 	mux.Handle("OPTIONS /referals/{referrer_id...}", corsMiddleware(handleCORS()))
 	mux.Handle("OPTIONS /referals", corsMiddleware(handleCORS()))
 
-	mux.Handle("GET /account", corsMiddleware(HandlerGetAccount(userService, logger)))
+	//mux.Handle("GET /account", corsMiddleware(HandlerGetAccount(userService, logger)))
 	mux.Handle("OPTIONS /account", corsMiddleware(handleCORS()))
 
 	mux.Handle("POST /deposit", corsMiddleware(HandlerDepositRequest(depositService, logger)))
@@ -44,7 +43,7 @@ func addRoutes(
 
 	mux.Handle("OPTIONS /deposit", corsMiddleware(handleCORS()))
 
-	mux.Handle("POST /order", corsMiddleware(HandlerCreateOrder(orderService, logger)))
+	mux.Handle("POST /order", corsMiddleware(HandlerCreateOrder(depositService, logger)))
 	mux.Handle("OPTIONS /order", corsMiddleware(handleCORS()))
 	// mux.Handle("GET /group/member", corsMiddleware(HandlerGroupMember(notifyController)))
 	// mux.Handle("OPTIONS /group/member", corsMiddleware(handleCORS()))

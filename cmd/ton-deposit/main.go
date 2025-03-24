@@ -13,12 +13,18 @@ import (
 	"github.com/ilyakaznacheev/cleanenv"
 	"go.uber.org/zap"
 
+	"github.com/RACE-Game/ton-deposit/application"
+	"github.com/RACE-Game/ton-deposit/infrastructure/db/deposit"
+	"github.com/RACE-Game/ton-deposit/infrastructure/db/postgres"
+	"github.com/RACE-Game/ton-deposit/interfaces/rest"
 	"github.com/RACE-Game/ton-deposit/interfaces/ton"
 )
 
 type Config struct {
 	HTTPHost           string `env:"HTTP_HOST" env-default:"127.0.0.1"`
 	HTTPPort           string `env:"HTTP_PORT" env-default:"9001"`
+	AppSecret          string `env:"APP_Secret" env-default:""`
+	AppName            string `env:"APP_NAME" env-default:""`
 	TonScanURL         string `env:"TON_SCAN_URL" env-default:"127.0.0.0:9003"`
 	PostgresURL        string `env:"POSTGRES_URL" env-default:"" required:"true"`
 	TelegramAPIKey     string `env:"TELEGRAM_API_KEY" env-default:""`
@@ -50,9 +56,30 @@ func run(ctx context.Context, _ io.Writer, args []string) error {
 		cfg.HTTPHost, cfg.HTTPPort,
 	)
 
-	tonClient := ton.New()
+	tonClient := ton.New(cfg.TonScanURL)
 	_ = tonClient
 
+	db, err := postgres.New(ctx, cfg.PostgresURL, cfg.AppName, 4)
+	if err != nil {
+		return fmt.Errorf("can't create db: %w", err)
+	}
+
+	depositRepo, err := deposit.New(db)
+	if err != nil {
+		return fmt.Errorf("can't create deposit repository: %w", err)
+	}
+
+	err = depositRepo.Init(ctx)
+	if err != nil {
+		return fmt.Errorf("can't init deposit repository: %w", err)
+	}
+
+	depositService := application.NewDepositService(depositRepo, tonClient)
+
+	restService := rest.NewServerMux(sugarLogger, cfg.TelegramAPIKey, cfg.AppSecret, depositService)
+
+	server := rest.New(restService, cfg.HTTPHost, cfg.HTTPPort, sugarLogger)
+	server.Start()
 	// define http server
 	// define service
 

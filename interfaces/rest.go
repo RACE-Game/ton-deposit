@@ -13,13 +13,12 @@ import (
 type DepositService interface {
 	CreateDeposit(ctx context.Context, userID int64, token string, amount uint64) error
 	GetDeposits(ctx context.Context, userID int64) (deposites []deposit.Deposit, err error)
-}
 
-type OrderService interface {
 	CreateOrder(
 		ctx context.Context,
 		userID int64,
 		token string,
+		wallet string,
 		amount uint64,
 	) (orderID uuid.UUID, err error)
 }

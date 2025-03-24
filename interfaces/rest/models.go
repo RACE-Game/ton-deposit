@@ -50,6 +50,7 @@ type ClaimResponse struct {
 type CreateOrderRequest struct {
 	Token  string `json:"token"`
 	Amount uint64 `json:"amount"`
+	Wallet string `json:"wallet"`
 }
 
 type CreateOrderResponse struct {

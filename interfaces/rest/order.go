@@ -7,7 +7,7 @@ import (
 	"github.com/RACE-Game/ton-deposit/interfaces"
 )
 
-func HandlerCreateOrder(orderService interfaces.OrderService, logger Logger) http.HandlerFunc {
+func HandlerCreateOrder(orderService interfaces.DepositService, logger Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		userI := r.Context().Value(TelegramUserKey)
 		telegramUser, ok := userI.(webapps.WebAppUser)
@@ -28,7 +28,7 @@ func HandlerCreateOrder(orderService interfaces.OrderService, logger Logger) htt
 			return
 		}
 
-		orderID, err := orderService.CreateOrder(r.Context(), int64(telegramUser.ID), req.Token, req.Amount)
+		orderID, err := orderService.CreateOrder(r.Context(), int64(telegramUser.ID), req.Token, req.Wallet, req.Amount)
 		if err != nil {
 			_ = encode(
 				w,

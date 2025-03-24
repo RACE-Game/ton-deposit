@@ -31,17 +31,15 @@ func NewServerMux(
 	logger Logger,
 	tgAPIKey string,
 	appSecret string,
-	userService interfaces.UserService,
+	//userService interfaces.UserService,
 	depositService interfaces.DepositService,
-	orderService interfaces.OrderService,
 ) http.Handler {
 	mux := http.NewServeMux()
 	addRoutes(
 		mux,
 		logger,
-		userService,
+		//	userService,
 		depositService,
-		orderService,
 	)
 
 	// add app version to response
