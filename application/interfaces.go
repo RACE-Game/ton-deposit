@@ -10,6 +10,8 @@ import (
 type DepositRepository interface {
 	Order(ctx context.Context, token string, userID int64, amount uint64, wallet string) (id uuid.UUID, err error)
 	GetOrders(ctx context.Context) (orders []deposit.Order, err error)
+	UpdateOrder(ctx context.Context, id uuid.UUID, txHash string) error
+	CreateDeposit(ctx context.Context, orderID uuid.UUID, userID int64, wallet string, token string, amount uint64) error
 }
 
 type TonClient interface {

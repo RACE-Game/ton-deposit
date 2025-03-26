@@ -11,7 +11,7 @@ type Deposit struct {
 	Token       string    `json:"Token"`
 	Wallet      string    `json:"Wallet"`
 	Comment     string    `json:"Comment"`
-	Amount      int64     `json:"Amount"`
+	Amount      uint64    `json:"Amount"`
 	TXHash      string    `json:"TxHash"`
 	Payload     string    `json:"Payload"`
 	TXTimestamp string    `json:"TxTimestamp"`
